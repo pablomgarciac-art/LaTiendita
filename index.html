@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Juegos y herramientas de Pablo: mira cómo funcionan y ábrelas directamente.">
+<meta name="theme-color" content="#5b4bff">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:title" content="Apps de Pablo">
+<meta property="og:description" content="Juegos y herramientas de Pablo: mira cómo funcionan y ábrelas directamente.">
+<style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Apps de Pablo</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&display=swap">
+<style>
+/* Layout: escaparate tipo tienda de apps. Cabecera con filtros, rejilla de fichas con capturas deslizables, pasos de uso y botón de entrada. */
+:root {
+  --bg: #f3f4f8;
+  --surface: #ffffff;
+  --surface-2: #eceef5;
+  --fg: #14172b;
+  --muted: #5b6079;
+  --line: #dde0ec;
+  --accent: #3347ff;
+  --accent-fg: #ffffff;
+  --shadow: 0 1px 2px rgba(20,23,43,.06), 0 8px 24px rgba(20,23,43,.06);
+  --font-display: "Sora", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1020; --surface: #171a30; --surface-2: #20244080; --fg: #eef0fb; --muted: #9aa0c2;
+    --line: #2a2f52; --accent: #7a8bff; --accent-fg: #0e1020;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1020; --surface: #171a30; --surface-2: #20244080; --fg: #eef0fb; --muted: #9aa0c2;
+  --line: #2a2f52; --accent: #7a8bff; --accent-fg: #0e1020;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background-color: var(--bg);
+  background-image: linear-gradient(165deg, color-mix(in srgb, var(--accent) 22%, var(--bg)) 0%, var(--bg) 38%, color-mix(in srgb, #ff4f9a 14%, var(--bg)) 100%);
+  background-repeat: no-repeat; background-size: 100% 100%;
+  color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.5;
+  padding-block: 0 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1760px; margin: 0 auto; }
+header.top { padding-block: 40px 20px; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.brand { display: flex; align-items: center; gap: 14px; margin: 10px 0 14px; }
+.logo { width: clamp(58px, 11vw, 88px); height: auto; flex: none; filter: drop-shadow(0 10px 22px rgba(120,70,255,.45)); }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 6vw, 68px); line-height: 1.05; margin: 0; letter-spacing: -.035em; text-wrap: balance; }
+.lead { color: var(--muted); max-width: 56ch; margin: 0; font-size: 16px; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 28px; }
+.chip {
+  font: inherit; font-weight: 500; color: var(--fg); background: var(--surface); border: 1px solid var(--line);
+  padding: 8px 16px; border-radius: 999px; cursor: pointer;
+}
+.chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+.chip:focus-visible, .btn:focus-visible, .scroll:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); gap: 24px; }
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow);
+  display: flex; flex-direction: column; min-width: 0; overflow: hidden;
+}
+.head { display: flex; gap: 14px; align-items: center; padding: 18px 18px 14px; }
+.icon { width: 60px; height: 60px; border-radius: 14px; flex: none; display: grid; place-items: center; color: #fff;
+  font-family: var(--font-display); font-weight: 700; font-size: 22px; overflow: hidden; }
+.icon img { width: 100%; height: 100%; display: block; object-fit: cover; }
+.titles { min-width: 0; flex: 1; }
+.titles h2 { font-family: var(--font-display); font-size: 20px; line-height: 1.15; margin: 0; }
+.titles p { margin: 2px 0 0; color: var(--muted); font-size: 13.5px; }
+.tag { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.gal { position: relative; margin: 4px 18px 6px; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: var(--surface-2); }
+.gal::before { content: ""; display: block; padding-top: 100%; }
+.scroll { position: absolute; inset: 0; overflow-y: auto; scroll-snap-type: y mandatory; scrollbar-width: none; }
+.scroll::-webkit-scrollbar { display: none; }
+.scroll img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; scroll-snap-align: start; }
+.more { position: absolute; right: 10px; bottom: 10px; font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 999px; background: rgba(10,12,30,.74); color: #fff; pointer-events: none; }
+.how { padding: 16px 18px 6px; }
+.how h3 { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; font-weight: 600; }
+.how ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.how li::marker { color: var(--accent); font-weight: 600; }
+.note { margin: 10px 0 0; font-size: 13px; color: var(--muted); }
+.foot { margin-top: auto; padding: 16px 18px 18px; display: flex; }
+.btn {
+  flex: 1; text-align: center; text-decoration: none; font-weight: 600; font-size: 15px; padding: 12px 16px;
+  border-radius: 12px; background: var(--accent); color: var(--accent-fg); display: inline-flex; justify-content: center; gap: 8px;
+}
+.btn:hover { filter: brightness(1.08); }
+.btn svg { width: 16px; height: 16px; flex: none; }
+.empty { color: var(--muted); }
+footer { margin-top: 36px; color: var(--muted); font-size: 13px; }
+@media (prefers-reduced-motion: no-preference) { .btn { transition: filter .15s; } }
+@media (min-width: 1024px) {
+  header.top { padding-block: 56px 28px; }
+  .lead { font-size: 18px; max-width: 64ch; }
+  .titles h2 { font-size: 22px; }
+  .titles p { font-size: 14.5px; }
+  .icon { width: 68px; height: 68px; }
+  .head { padding: 22px 22px 16px; }
+  .gal { margin-inline: 22px; }
+  .how { padding: 18px 22px 8px; }
+  .foot { padding: 18px 22px 22px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Tienda personal</div>
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Logo P"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f4bff"/><stop offset=".55" stop-color="#8a3dff"/><stop offset="1" stop-color="#ff4fa3"/></linearGradient><linearGradient id="lp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#ffd9ee"/></linearGradient><radialGradient id="lh" cx=".25" cy=".15" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".38"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><rect width="64" height="64" rx="18" fill="url(#lg)"/><rect width="64" height="64" rx="18" fill="url(#lh)"/><path d="M25.5 52.5V20h12.5a10.5 10.5 0 0 1 0 21H25.5" fill="none" stroke="#1a1050" stroke-opacity=".35" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 49V16h12.5a10.5 10.5 0 0 1 0 21H22" fill="none" stroke="url(#lp)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34.5" cy="26.5" r="3.4" fill="#8a3dff"/><path d="M51 8l1.7 4.3L57 14l-4.3 1.7L51 20l-1.7-4.3L45 14l4.3-1.7z" fill="#fff" fill-opacity=".95"/></svg>
+      <h1>Apps de Pablo</h1>
+    </div>
+    <p class="lead">Juegos y herramientas que funcionan directamente en el navegador y en el móvil. Mira cómo funcionan y pulsa Abrir para entrar.</p>
+    <div class="filters" role="group" aria-label="Filtrar por categoría" id="filters"></div>
+  </header>
+  <main class="grid" id="grid"></main>
+  <footer>Se abren en una pestaña nueva. Las apps se pueden instalar en la pantalla de inicio desde el menú del navegador.</footer>
+</div>
+
+<script>
+var BASE = "https://pablomgarciac-art.github.io/";
+var APPS = [
+  { id: "sintonia", name: "Sintonía", cat: "Música", tagline: "Las emisoras más escuchadas de España, en directo.", repo: "sintonia", color: "#2A3BFF", icon: "img/sintonia-icon.png",
+    shots: ["img/sintonia-1.webp", "img/sintonia-2.webp"],
+    steps: ["Abre la app y pulsa Escuchar.", "Cambia de emisora en el dial: Los40, SER, COPE y más.", "Guarda tus favoritas y programa el temporizador de apagado."],
+    note: "Necesita conexión a internet." },
+  { id: "cestuki", name: "Cestuki", cat: "Herramientas", tagline: "Compra mejor. Paga menos.", repo: "Comparador", color: "#0a7d3b", icon: "img/cestuki-icon.png",
+    shots: ["img/cestuki-1.webp", "img/cestuki-2.webp"],
+    steps: ["Busca un producto, por ejemplo leche o yogur.", "Compara el mismo producto en Mercadona, Lidl, Carrefour y Dia, ordenado por precio.", "Añádelo a tu lista de la compra y mira el total."],
+    note: "Más de 5.000 productos con precio y foto." },
+  { id: "compresor", name: "Compresor de fotos", cat: "Herramientas", tagline: "Mismas fotos, menos peso.", repo: "compresor", color: "#e0a800", icon: "img/compresor-icon.png",
+    shots: ["img/compresor-1.webp", "img/compresor-2.webp"],
+    steps: ["Suelta varias fotos o una carpeta entera.", "Elige formato, calidad y resolución.", "Descarga el resultado; con una carpeta sale un ZIP."],
+    note: "Todo se procesa en tu navegador, no se sube nada." },
+  { id: "quienlacanta", name: "Quién la canta", cat: "Juegos", tagline: "Suena un trocito de un temazo. ¿Sabes quién canta?", repo: "quienlacanta", color: "#1d3bd8", icon: "img/quienlacanta-icon.png",
+    shots: ["img/quienlacanta-1.webp", "img/quienlacanta-2.webp"],
+    steps: ["Añade jugadores y elige la dificultad.", "Escucha el fragmento de la canción.", "Adivina el cantante y suma puntos."],
+    note: "Necesita conexión a internet para oír los fragmentos." },
+  { id: "pueblo", name: "De pueblo a ciudad", cat: "Juegos", tagline: "Construye tu pueblo en Extremadura y hazlo crecer.", repo: "DePuebloaCiudad", color: "#2e7d4f", icon: "img/pueblo-icon.png",
+    shots: ["img/pueblo-1.webp", "img/pueblo-2.webp"],
+    steps: ["Empieza una partida nueva: pon nombre al pueblo y elige el nivel.", "Construye, cuida el dinero y a tus vecinos.", "Haz crecer el pueblo hasta ciudad. La partida se guarda sola cada mes."],
+    note: "" },
+  { id: "neondash", name: "Neon Dash", cat: "Juegos", tagline: "Salta, vuela y rueda hasta la meta.", repo: "NeonDash", land: true, color: "#c2185b", icon: "img/neondash-icon.png",
+    shots: ["img/neondash-w1.webp", "img/neondash-w2.webp", "img/neondash-w3.webp", "img/neondash-w4.webp", "img/neondash-w5.webp", "img/neondash-w6.webp"],
+    steps: ["Salta con espacio, clic o tocando la pantalla.", "Cambia de vehículo al cruzar los portales.", "Completa cada mundo sin chocar."],
+    note: "Se juega en horizontal en el móvil." },
+  { id: "mathquest", name: "Math Quest", cat: "Juegos", tagline: "Domina las matemáticas mientras te diviertes.", repo: "MathQuest", color: "#6a3df0", icon: "img/mathquest-icon.png",
+    shots: ["img/mathquest-1.webp", "img/mathquest-2.webp"],
+    steps: ["Elige modalidad: sumas y restas, multiplicar y dividir, porcentajes y regla de tres, o rompecabezas.", "Resuelve operaciones que van subiendo de dificultad.", "Acierta para avanzar y ganar estrellas."],
+    note: "" },
+  { id: "fruit", name: "Fruit Memory", cat: "Juegos", tagline: "Desafía tu mente con parejas de frutas.", repo: "FruitMemory", color: "#e8590c", icon: "img/fruit-icon.png",
+    shots: ["img/fruit-1.webp", "img/fruit-2.webp"],
+    steps: ["Elige nivel: Fácil 4×4, Medio 6×6 o Difícil 9×9.", "Da la vuelta a las cartas y encuentra las parejas.", "Completa las 3 fases, con 60 segundos en cada una."],
+    note: "" },
+  { id: "robot", name: "Robot Jungle", cat: "Juegos", tagline: "El taller de la selva: ayuda al robot perdido.", repo: "RobotJungle", color: "#1b7f5c", icon: "img/robot-icon.png", land: true,
+    shots: ["img/robot-1.webp", "img/robot-2.webp"],
+    steps: ["Gira el móvil a horizontal y toca para empezar.", "Muévete con las flechas, salta y dispara con los botones.", "Cuida vidas y batería, recoge munición y supera las fases."],
+    note: "Se juega en horizontal." }
+];
+var FR = { neondash: 3 };
+var ARROW = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>';
+var grid = document.getElementById("grid"), filters = document.getElementById("filters");
+var current = "Todas";
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+function card(a) {
+  var icon = a.icon ? '<img src="' + a.icon + '" alt="" width="60" height="60">' : esc(a.initials);
+  var nf = FR[a.id] || 1, shots = "";
+  for (var i = 1; i <= nf; i++) shots += '<img src="img/' + a.id + '-f' + i + '.webp" alt="Capturas ' + i + ' de ' + esc(a.name) + '" loading="lazy">';
+  var steps = a.steps.map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("");
+  var url = BASE + a.repo + "/";
+  return '<article class="card" data-cat="' + a.cat + '">' +
+    '<div class="head"><div class="icon" style="background:' + a.color + '">' + icon + '</div>' +
+    '<div class="titles"><div class="tag">' + esc(a.cat) + '</div><h2>' + esc(a.name) + '</h2><p>' + esc(a.tagline) + '</p></div></div>' +
+    '<div class="gal"><div class="scroll" tabindex="0" aria-label="Capturas de ' + esc(a.name) + '">' + shots + '</div>' + (nf > 1 ? '<span class="more">' + nf + ' pantallas · desliza ↕</span>' : '') + '</div>' +
+    '<div class="how"><h3>Cómo funciona</h3><ol>' + steps + '</ol>' + (a.note ? '<p class="note">' + esc(a.note) + '</p>' : '') + '</div>' +
+    '<div class="foot"><a class="btn" href="' + url + '" target="_blank" rel="noopener">Abrir ' + esc(a.name) + ' ' + ARROW + '</a></div></article>';
+}
+function render() {
+  var list = APPS.filter(function (a) { return current === "Todas" || a.cat === current; });
+  grid.innerHTML = list.map(card).join("");
+}
+function buildFilters() {
+  var cats = ["Todas"];
+  APPS.forEach(function (a) { if (cats.indexOf(a.cat) < 0) cats.push(a.cat); });
+  filters.innerHTML = cats.map(function (c) {
+    var n = c === "Todas" ? APPS.length : APPS.filter(function (a) { return a.cat === c; }).length;
+    return '<button type="button" class="chip" aria-pressed="' + (c === current) + '" data-c="' + c + '">' + c + " · " + n + "</button>";
+  }).join("");
+}
+filters.addEventListener("click", function (e) {
+  var b = e.target.closest("button[data-c]"); if (!b) return;
+  current = b.getAttribute("data-c"); buildFilters(); render();
+});
+buildFilters(); render();
+</script>
+</body>
+</html>
